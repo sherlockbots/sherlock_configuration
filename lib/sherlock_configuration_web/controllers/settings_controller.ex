@@ -1,12 +1,21 @@
 defmodule SherlockConfigurationWeb.SettingsController do
   use SherlockConfigurationWeb, :controller
+  alias SherlockConfiguration.SettingsRepository
 
-  def get(conn, %{"id" => id} = params) do
-    json(conn, %{"message" => :ok, "id" => id})
+  action_fallback SherlockConfigurationWeb.FallbackController
+
+  def get(conn, %{"id" => id}) do
+    settings = SettingsRepository.get!(id)
+    render(conn, "show.json", settings)
   end
 
   def create(conn, params) do
-    json(conn, %{"message" => :ok})
+    with {:ok, settings} <- SettingsRepository.create(params) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", Routes.settings_path(conn, :get, settings))
+      |> render("show.json", settings: settings)
+    end
   end
 
   def update(conn, %{"id" => id} = params) do

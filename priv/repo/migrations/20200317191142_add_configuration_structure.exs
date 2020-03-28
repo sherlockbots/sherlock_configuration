@@ -3,7 +3,7 @@ defmodule SherlockConfiguration.Repo.Migrations.AddConfigurationStructure do
 
   def change do
     create table(:settings, primary_key: false) do
-      add :id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()")
+      add :uuid, :uuid, primary_key: true
       add :slack_id, :string
       add :message_filter, :boolean
       add :code_filter, :boolean
@@ -13,14 +13,14 @@ defmodule SherlockConfiguration.Repo.Migrations.AddConfigurationStructure do
     end
 
     create table(:blacklist, primary_key: false) do
-      add :id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()")
-      add :settings_id, references(:settings, type: :uuid)
+      add :uuid, :uuid, primary_key: true
+      add :settings_uuid, references(:settings, type: :uuid, column: :uuid)
       add :word, :string
     end
 
-    create table(:account, primary_key: false) do
-      add :id, :uuid, primary_key: true, default: fragment("uuid_generate_v4()")
-      add :settings_id, references(:settings, type: :uuid)
+    create table(:accounts, primary_key: false) do
+      add :uuid, :uuid, primary_key: true
+      add :settings_uuid, references(:settings, type: :uuid, column: :uuid)
       add :email, :string
     end
   end
