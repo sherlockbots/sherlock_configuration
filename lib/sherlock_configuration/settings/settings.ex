@@ -26,14 +26,14 @@ defmodule SherlockConfiguration.Settings do
       #Ecto.Changeset<action: nil, changes: %{ accounts: [ #Ecto.Changeset< action: :insert, changes: %{email: "test@email.com"}, errors: [], data: #SherlockConfiguration.Settings.Account<>, valid?: true > ], blacklist: [ #Ecto.Changeset< action: :insert, changes: %{word: "leco"}, errors: [], data: #SherlockConfiguration.Settings.Blacklist<>, valid?: true > ], code_filter: true, docs_filter: true, image_filter: true, message_filter: true, pdf_filter: true, slack_id: "23412431" }, errors: [], data: #SherlockConfiguration.Settings<>, valid?: true >
   """
 
-  def save(settings) do
+  def create(settings) do
     %Settings{}
     |> changeset(settings)
     |> Repo.insert
   end
 
   def get(id) do
-    Repo.get(%Settings{}, id)
+    Repo.get(Settings, id)
   end
 
   def changeset(struct, params) do
